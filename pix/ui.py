@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
 
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("PixRetribution")
+        self.setWindowTitle("PixBeastMastery")
         self.setFixedSize(1600, 1200)
         self.setWindowFlags(
             Qt.WindowType.Window
@@ -149,9 +149,9 @@ class MainWindow(QMainWindow):
             if not executable:
                 raise OSError("可执行文件路径为空")
             source = Path(__file__).resolve().parent / "lua"
-            if not source.is_dir() or not (source / "PixRetribution.toc").is_file():
-                raise OSError(f"插件源目录或 PixRetribution.toc 缺失：{source}")
-            destination = Path(executable).parent / "Interface" / "AddOns" / "PixRetribution"
+            if not source.is_dir() or not (source / "PixBeastMastery.toc").is_file():
+                raise OSError(f"插件源目录或 PixBeastMastery.toc 缺失：{source}")
+            destination = Path(executable).parent / "Interface" / "AddOns" / "PixBeastMastery"
             shutil.copytree(source, destination, dirs_exist_ok=True)
         except (psutil.Error, OSError) as error:
             QMessageBox.warning(

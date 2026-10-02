@@ -51,12 +51,12 @@ class Context:
         return self.readPercentCell(5)
 
     @property
-    def power_holy_power(self) -> int:
-        return int(self.readNumberCell(6) + 0.5)
+    def power_focus_pct(self) -> float:
+        return self.readPercentCell(6)
 
     @property
-    def force_single_target(self) -> bool:
-        return self.readBooleanCell(7)
+    def attack_mode(self) -> int:
+        return int(self.readNumberCell(7) + 0.5)
 
     @property
     def player_in_combat(self) -> bool:
@@ -205,97 +205,28 @@ class Context:
         return self.readSpellCDCell(42)
 
     @property
-    def spell_cd_rebuke(self) -> float:
+    def spell_cd_counter_shot(self) -> float:
         return self.readSpellCDCell(43)
 
     @property
-    def spell_cd_avenging_wrath(self) -> float:
+    def spell_cd_bestial_wrath(self) -> float:
         return self.readSpellCDCell(44)
 
     @property
-    def spell_cd_execution_sentence(self) -> float:
+    def spell_cd_wild_thrash(self) -> float:
         return self.readSpellCDCell(45)
 
     @property
-    def spell_cd_wake_of_ashes(self) -> float:
+    def spell_cd_kill_command(self) -> float:
         return self.readSpellCDCell(46)
 
     @property
-    def spell_cd_blade_of_justice(self) -> float:
+    def spell_cd_barbed_shot(self) -> float:
         return self.readSpellCDCell(47)
 
     @property
-    def spell_cd_divine_toll(self) -> float:
-        return self.readSpellCDCell(51)
-
-    @property
-    def spell_cd_lay_on_hands(self) -> float:
-        return self.readSpellCDCell(52)
-
-    @property
-    def spell_cd_divine_shield(self) -> float:
-        return self.readSpellCDCell(53)
-
-    @property
-    def spell_charges_judgment(self) -> int:
-        """Grayscale charge count (0–2); 0 also includes missing data."""
+    def spell_charges_barbed_shot(self) -> int:
         return int(self.readNumberCell(48) + 0.5)
-
-    @property
-    def item_cd_lights_potential(self) -> bool:
-        return self.readBooleanCell(54)
-
-    @property
-    def player_has_buff_avenging_wrath(self) -> bool:
-        return self.readBooleanCell(55)
-
-    @property
-    def player_has_buff_divine_purpose(self) -> bool:
-        return self.readBooleanCell(56)
-
-    @property
-    def player_has_buff_dawnlight(self) -> bool:
-        return self.readBooleanCell(57)
-
-    @property
-    def player_has_buff_art_of_war(self) -> bool:
-        return self.readBooleanCell(58)
-
-    @property
-    def player_has_buff_divine_arbiter_storm(self) -> bool:
-        return self.readBooleanCell(59)
-
-    @property
-    def four_piece_enabled(self) -> bool:
-        return self.readBooleanCell(60)
-
-    @property
-    def target_in_blade_of_justice_range(self) -> bool:
-        return self.readBooleanCell(61)
-
-    @property
-    def target_in_judgment_range(self) -> bool:
-        return self.readBooleanCell(62)
-
-    @property
-    def target_in_hammer_of_justice_range(self) -> bool:
-        return self.readBooleanCell(63)
-
-    @property
-    def player_has_dispellable_poison_or_disease(self) -> bool:
-        return self.readBooleanCell(64)
-
-    @property
-    def spell_cd_cleanse_toxins(self) -> float:
-        return self.readSpellCDCell(65)
-
-    @property
-    def auto_cleanse_enabled(self) -> bool:
-        return self.readBooleanCell(66)
-
-    @property
-    def auto_trinket_enabled(self) -> bool:
-        return self.readBooleanCell(67)
 
     @property
     def mouseover_in_melee_range(self) -> bool:
@@ -306,8 +237,114 @@ class Context:
         return self.readBooleanCell(50)
 
     @property
-    def player_melee_enemies_count(self) -> int:
-        """Observable living enemies within Hammer of Justice range (0–40)."""
+    def spell_cd_mend_pet(self) -> float:
+        return self.readSpellCDCell(51)
+
+    @property
+    def spell_cd_exhilaration(self) -> float:
+        return self.readSpellCDCell(52)
+
+    @property
+    def spell_cd_misdirection(self) -> float:
+        return self.readSpellCDCell(53)
+
+    @property
+    def reckless_potion_ready(self) -> bool:
+        return self.readBooleanCell(54)
+
+    @property
+    def player_has_buff_pack_wyvern(self) -> bool:
+        return self.readBooleanCell(55)
+
+    @property
+    def player_has_buff_natures_ally(self) -> bool:
+        return self.readBooleanCell(56)
+
+    @property
+    def player_has_buff_pack_boar(self) -> bool:
+        return self.readBooleanCell(57)
+
+    @property
+    def player_has_buff_pack_bear(self) -> bool:
+        return self.readBooleanCell(58)
+
+    @property
+    def player_has_buff_cobra_fangs(self) -> bool:
+        return self.readBooleanCell(59)
+
+    @property
+    def finishing(self) -> bool:
+        return self.readBooleanCell(60)
+
+    @property
+    def power_focus_max(self) -> int:
+        return int(self.readNumberCell(61) + 0.5)
+
+    @property
+    def pet_is_exists(self) -> bool:
+        return self.readBooleanCell(63)
+
+    @property
+    def pet_is_alive(self) -> bool:
+        return self.readBooleanCell(64)
+
+    @property
+    def pet_health_pct(self) -> float:
+        return self.readPercentCell(65)
+
+    @property
+    def party_tank_index(self) -> int:
+        return int(self.readNumberCell(66) + 0.5)
+
+    @property
+    def auto_trinket_enabled(self) -> bool:
+        return self.readBooleanCell(67)
+
+    @property
+    def player_in_party(self) -> bool:
+        return self.readBooleanCell(69)
+
+    @property
+    def spell_known_misdirection(self) -> bool:
+        return self.readBooleanCell(70)
+
+    @property
+    def party_tank_in_misdirection_range(self) -> bool:
+        return self.readBooleanCell(71)
+
+    @property
+    def target_cast_remaining(self) -> float:
+        return self.readNumberCell(72) / 10.0
+
+    @property
+    def focus_cast_remaining(self) -> float:
+        return self.readNumberCell(73) / 10.0
+
+    @property
+    def spell_charges_kill_command(self) -> int:
+        return int(self.readNumberCell(74) + 0.5)
+
+    @property
+    def spell_max_charges_barbed_shot(self) -> int:
+        return int(self.readNumberCell(75) + 0.5)
+
+    @property
+    def power_focus(self) -> int:
+        maximum = self.power_focus_max
+        if not 100 <= maximum <= 120:
+            return 0
+        return int(self.power_focus_pct * maximum / 100.0 + 0.5)
+
+    @property
+    def spell_recharge_barbed_shot(self) -> float:
+        maximum = self.spell_max_charges_barbed_shot
+        if maximum > 0 and self.spell_charges_barbed_shot >= maximum:
+            return 0.0
+        return self.readSpellCDCell(62)
+
+    @property
+    def player_enemies_count(self) -> int:
+        """Observable living, attackable, in-combat nameplates in Counter Shot range."""
         return int(self.matrix.getCell(68).ratio * 40 + 0.5)
 
     @property

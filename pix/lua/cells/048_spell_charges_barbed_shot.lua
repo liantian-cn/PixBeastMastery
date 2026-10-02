@@ -1,4 +1,4 @@
--- 单格灰度字节直接表示充能数；本技能为 0–2 次，缺失或零充能为黑色。
+-- 灰度字节表示充能计数；缺失数据为零。
 -- 秘密充能仅交给 string.format 和 SetText，不调用受执行环境限制的 FormatNumber。
 local addonName, addonTable    = ...
 
@@ -22,7 +22,7 @@ local SIZE = addonTable.SIZE
 
 -- 本地配置
 local X = 48
-local SPELL_IDS = { 20271 }
+local SPELL_IDS = { 217200 }
 local eventFrame = CreateFrame("Frame")
 local text
 
@@ -30,7 +30,7 @@ local selectedSpellID
 local function SelectSpell()
     selectedSpellID = nil
     for _, spellID in ipairs(SPELL_IDS) do
-        if IsSpellInSpellBook(spellID) then
+        if IsSpellInSpellBook(spellID) or C_SpellBook.IsSpellKnown(spellID) then
             selectedSpellID = spellID
             return
         end

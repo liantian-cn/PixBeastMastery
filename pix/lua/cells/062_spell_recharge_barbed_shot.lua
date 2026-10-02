@@ -1,3 +1,4 @@
+-- 下一层充能剩余时间；无对象为黑色，满充能由 Python 结合数量与上限识别。
 -- 使用共享非线性剩余时间曲线显示冷却，就绪白色，不可用黑色。
 local addonName, addonTable    = ...
 
@@ -10,7 +11,7 @@ local ipairs                   = ipairs
 local CreateFrame              = CreateFrame
 local After                    = C_Timer.After
 local IsSpellInSpellBook       = C_SpellBook.IsSpellInSpellBook
-local GetSpellCooldownDuration = C_Spell.GetSpellCooldownDuration
+local GetSpellChargeDuration = C_Spell.GetSpellChargeDuration
 
 -- 项目引用
 local COLOR                    = addonTable.COLOR
@@ -19,8 +20,8 @@ local Cell                     = addonTable.Cell
 local remainingCurve           = addonTable.CURVE.SpellColddownRemaining
 
 -- 本地配置
-local X = 46
-local SPELL_IDS = { 255937 }
+local X = 62
+local SPELL_IDS = { 217200 }
 local eventFrame               = CreateFrame("Frame")
 local cell
 
@@ -28,7 +29,7 @@ local selectedSpellID
 local function SelectSpell()
     selectedSpellID = nil
     for _, spellID in ipairs(SPELL_IDS) do
-        if IsSpellInSpellBook(spellID) then
+        if IsSpellInSpellBook(spellID) or C_SpellBook.IsSpellKnown(spellID) then
             selectedSpellID = spellID
             return
         end
@@ -39,8 +40,8 @@ local function Refresh()
     if not cell then return end
     local color = COLOR.BLACK
     if selectedSpellID then
-        local duration = GetSpellCooldownDuration(selectedSpellID, true)
-        if duration then color = duration:EvaluateRemainingDuration(remainingCurve) end
+        local duration = GetSpellChargeDuration(selectedSpellID)
+        if issecretvalue(duration) or duration ~= nil then color = duration:EvaluateRemainingDuration(remainingCurve) end
     end
     cell:setCell(color)
 end
@@ -53,7 +54,7 @@ end
 
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
 eventFrame:RegisterEvent("SPELLS_CHANGED")
-eventFrame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 eventFrame:SetScript("OnEvent", function(_, event)
     After(0, function()
         if event == "PLAYER_ENTERING_WORLD" or event == "SPELLS_CHANGED" then SelectSpell() end

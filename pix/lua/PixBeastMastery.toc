@@ -1,10 +1,10 @@
 ## Interface: 120100
-## Title: 圣骑士-惩戒
+## Title: 猎人-兽王（猎群领袖）
 ## Version: 12.1.0.68209
 ## Category: Tools
-## SavedVariables: PixRetributionDB
+## SavedVariables: PixBeastMasteryDB
 ## LoadSavedVariablesFirst: 1
-## IconTexture: Interface\Icons\Spell_Holy_AuraOfLight
+## IconTexture: Interface\Icons\Ability_Hunter_BeastTaming
 
 core\base.lua
 core\config.lua
@@ -21,8 +21,8 @@ cells\002_in_burst.lua
 cells\003_delaying.lua
 cells\004_player_is_alive.lua
 cells\005_player_health_pct.lua
-cells\006_power_holy_power.lua
-cells\007_force_single_target.lua
+cells\006_power_focus_pct.lua
+cells\007_attack_mode.lua
 cells\008_player_in_combat.lua
 cells\009_player_is_player_target.lua
 cells\010_player_is_moving.lua
@@ -58,32 +58,39 @@ cells\039_focus_in_melee_range.lua
 cells\040_focus_in_ranged_range.lua
 cells\041_focus_in_interrupt_range.lua
 cells\042_spell_cd_global_cooldown.lua
-cells\043_spell_cd_rebuke.lua
-cells\044_spell_cd_avenging_wrath.lua
-cells\045_spell_cd_execution_sentence.lua
-cells\046_spell_cd_wake_of_ashes.lua
-cells\047_spell_cd_blade_of_justice.lua
-cells\048_spell_charges_judgment.lua
+cells\043_spell_cd_counter_shot.lua
+cells\044_spell_cd_bestial_wrath.lua
+cells\045_spell_cd_wild_thrash.lua
+cells\046_spell_cd_kill_command.lua
+cells\047_spell_cd_barbed_shot.lua
+cells\048_spell_charges_barbed_shot.lua
 cells\049_mouseover_in_melee_range.lua
 cells\050_burst_potion_enabled.lua
-cells\051_spell_cd_divine_toll.lua
-cells\052_spell_cd_lay_on_hands.lua
-cells\053_spell_cd_divine_shield.lua
-cells\054_item_cd_lights_potential.lua
-cells\055_player_has_buff_avenging_wrath.lua
-cells\056_player_has_buff_divine_purpose.lua
-cells\057_player_has_buff_dawnlight.lua
-cells\058_player_has_buff_art_of_war.lua
-cells\059_player_has_buff_divine_arbiter_storm.lua
-cells\060_four_piece_enabled.lua
-cells\061_target_in_blade_of_justice_range.lua
-cells\062_target_in_judgment_range.lua
-cells\063_target_in_hammer_of_justice_range.lua
-cells\064_player_has_dispellable_poison_or_disease.lua
-cells\065_spell_cd_cleanse_toxins.lua
-cells\066_auto_cleanse_enabled.lua
+cells\051_spell_cd_mend_pet.lua
+cells\052_spell_cd_exhilaration.lua
+cells\053_spell_cd_misdirection.lua
+cells\054_reckless_potion_ready.lua
+cells\055_player_has_buff_pack_wyvern.lua
+cells\056_player_has_buff_natures_ally.lua
+cells\057_player_has_buff_pack_boar.lua
+cells\058_player_has_buff_pack_bear.lua
+cells\059_player_has_buff_cobra_fangs.lua
+cells\060_finishing.lua
+cells\061_power_focus_max.lua
+cells\062_spell_recharge_barbed_shot.lua
+cells\063_pet_is_exists.lua
+cells\064_pet_is_alive.lua
+cells\065_pet_health_pct.lua
+cells\066_party_tank_index.lua
 cells\067_auto_trinket_enabled.lua
-cells\068_player_melee_enemies_count.lua
+cells\068_player_enemies_count.lua
+cells\069_player_in_party.lua
+cells\070_spell_known_misdirection.lua
+cells\071_party_tank_in_misdirection_range.lua
+cells\072_target_cast_remaining.lua
+cells\073_focus_cast_remaining.lua
+cells\074_spell_charges_kill_command.lua
+cells\075_spell_max_charges_barbed_shot.lua
 cells\I01_player_cast_icon.lua
 cells\I02_assisted_combat_icon.lua
 cells\I03_target_cast_icon.lua

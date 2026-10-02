@@ -40,7 +40,7 @@ addonTable.CommandHandler = {}
 local CommandHandler = addonTable.CommandHandler
 
 function addonTable.PrintCommandHelp()
-    print("PixRetribution 命令:")
+    print("PixBeastMastery 命令:")
     print("/pix toggle — 切换启停")
     print("/pix disable — 关闭插件")
     print("/pix burst [秒数] — 爆发窗口，默认 15 秒，0 结束")
@@ -69,8 +69,8 @@ end
 
 -- 只有匹配当前专精的插件注册统一命令，避免多个 Pix 插件抢占。
 if not addonTable.RELOAD_REQUIRED then
-    SLASH_PixRetribution1 = "/pix"
-    SlashCmdList.PixRetribution = function(command)
+    SLASH_PixBeastMastery1 = "/pix"
+    SlashCmdList.PixBeastMastery = function(command)
         CommandHandler:Dispatch(command)
     end
 end

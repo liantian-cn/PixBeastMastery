@@ -36,7 +36,7 @@ local function RequireReload(message)
     end
 end
 
-if classFilename ~= "PALADIN" or baselineSpecialization ~= 3 then
+if classFilename ~= "HUNTER" or baselineSpecialization ~= 1 then
     DisableAddOn(addonName)
     RequireReload("当前职业或专精不匹配，插件已禁用，请重载界面。")
 end
@@ -46,7 +46,7 @@ specializationFrame:RegisterEvent("ACTIVE_PLAYER_SPECIALIZATION_CHANGED")
 specializationFrame:SetScript("OnEvent", function()
     local specialization = GetSpecialization()
     if specialization ~= baselineSpecialization then
-        if classFilename ~= "PALADIN" or specialization ~= 3 then
+        if classFilename ~= "HUNTER" or specialization ~= 1 then
             DisableAddOn(addonName)
         end
         RequireReload("专精已切换，请重载界面以加载对应循环。")

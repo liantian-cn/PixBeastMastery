@@ -1,4 +1,4 @@
--- 每 0.1 秒重查 mouseover 存在与责难射程；无单位或普通 nil 时清黑。
+-- 每 0.1 秒重查 mouseover 存在与反制射击射程；无单位或普通 nil 时清黑。
 local addonName, addonTable = ...
 
 -- Lua 内置方法
@@ -21,7 +21,7 @@ local UIInitFuncs = addonTable.UIInitFuncs
 
 -- 本地配置
 local X = 49
-local SPELL_ID = 96231
+local SPELL_ID = 147362
 local cell
 local eventFrame = CreateFrame("Frame")
 

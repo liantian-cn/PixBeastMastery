@@ -18,10 +18,10 @@ local Cell = addonTable.Cell
 local UIInitFuncs = addonTable.UIInitFuncs
 
 local X = 68
-local SPELL_ID = 853
-local COMBAT_ONLY = false
+local SPELL_ID = 147362
+local COMBAT_ONLY = true
 local NAMEPLATE_LIMIT = 40
-local UPDATE_INTERVAL = 0.2
+local UPDATE_INTERVAL = 1
 local cell
 local eventFrame = CreateFrame("Frame")
 
@@ -56,6 +56,8 @@ local function Initialize()
 end
 
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+eventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
+eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
 eventFrame:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 eventFrame:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 eventFrame:SetScript("OnEvent", function()

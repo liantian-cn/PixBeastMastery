@@ -1,9 +1,10 @@
--- 第 64 格显示玩家自身可驱散的中毒或疾病：存在为白色，否则为黑色。
+-- 玩家增益 472324 是否存在。
 -- 原生光环容器负责匹配与显隐，不读取秘密光环数据。
 local addonName, addonTable    = ...
 
 -- Lua 内置方法
 local insert                  = table.insert
+local ipairs                  = ipairs
 
 -- WoW API
 local CreateFrame             = CreateFrame
@@ -17,8 +18,8 @@ local FrameLevel              = addonTable.FrameLevel
 local UIInitFuncs             = addonTable.UIInitFuncs
 
 -- 本地配置与状态
-local X = 64
-local DISPEL_TYPES = { Poison = true, Disease = true }
+local X = 57
+local AURA_IDS = { 472324 }
 local eventFrame              = CreateFrame("Frame")
 local container
 
@@ -36,8 +37,12 @@ local function Initialize()
     container:SetFrameLevel(FrameLevel.AuraContainer)
     container:SetUnit("player")
 
-    container:AddAuraSlot("aura", "HARMFUL|RAID_PLAYER_DISPELLABLE", {
-        candidateFilters = { includeDispelTypes = DISPEL_TYPES },
+    local includeSpellIDs = {}
+    for _, spellID in ipairs(AURA_IDS) do
+        includeSpellIDs[spellID] = true
+    end
+    container:AddAuraSlot("aura", "HELPFUL|PLAYER", {
+        candidateFilters = { includeSpellIDs = includeSpellIDs },
         initializeFrame = function(frame)
             frame:SetSize(SIZE.CELL, SIZE.CELL)
             frame:SetPoint("TOPLEFT", container, "TOPLEFT")

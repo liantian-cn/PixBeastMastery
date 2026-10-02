@@ -1,7 +1,7 @@
 [project]
-name = "pixretribution"
+name = "pixbeastmastery"
 version = "0.1.0"
-description = "Herald of the Sun Retribution Paladin pixel rotation"
+description = "Pack Leader Beast Mastery Hunter pixel rotation"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

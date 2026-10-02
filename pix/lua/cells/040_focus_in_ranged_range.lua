@@ -21,7 +21,7 @@ local UIInitFuncs = addonTable.UIInitFuncs
 
 -- 本地配置
 local X = 40
-local SPELL_ID = 383328
+local SPELL_ID = 147362
 local cell
 local eventFrame = CreateFrame("Frame")
 

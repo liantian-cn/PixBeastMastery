@@ -1,4 +1,4 @@
--- 第 57 格显示玩家的晨光增益：存在为白色，否则为黑色。
+-- 玩家增益 472325 是否存在。
 -- 原生光环容器负责匹配与显隐，不读取秘密光环数据。
 local addonName, addonTable    = ...
 
@@ -18,8 +18,8 @@ local FrameLevel              = addonTable.FrameLevel
 local UIInitFuncs             = addonTable.UIInitFuncs
 
 -- 本地配置与状态
-local X = 57
-local AURA_IDS = { 431522 }
+local X = 58
+local AURA_IDS = { 472325 }
 local eventFrame              = CreateFrame("Frame")
 local container
 

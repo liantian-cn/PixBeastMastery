@@ -19,8 +19,8 @@ local Cell                     = addonTable.Cell
 local remainingCurve           = addonTable.CURVE.SpellColddownRemaining
 
 -- 本地配置
-local X = 65
-local SPELL_IDS = { 213644 }
+local X = 43
+local SPELL_IDS = { 147362 }
 local eventFrame               = CreateFrame("Frame")
 local cell
 
@@ -28,7 +28,7 @@ local selectedSpellID
 local function SelectSpell()
     selectedSpellID = nil
     for _, spellID in ipairs(SPELL_IDS) do
-        if IsSpellInSpellBook(spellID) then
+        if IsSpellInSpellBook(spellID) or C_SpellBook.IsSpellKnown(spellID) then
             selectedSpellID = spellID
             return
         end
@@ -40,7 +40,7 @@ local function Refresh()
     local color = COLOR.BLACK
     if selectedSpellID then
         local duration = GetSpellCooldownDuration(selectedSpellID, true)
-        if duration then color = duration:EvaluateRemainingDuration(remainingCurve) end
+        if issecretvalue(duration) or duration ~= nil then color = duration:EvaluateRemainingDuration(remainingCurve) end
     end
     cell:setCell(color)
 end

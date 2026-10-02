@@ -1,4 +1,4 @@
--- 独立爆发药水开关：通过现有面板 combo 配置，默认关闭。
+-- 自动爆发药水开关：通过现有面板 combo 配置，默认开启。
 local addonName, addonTable = ...
 
 local insert = table.insert
@@ -11,14 +11,14 @@ local UIInitFuncs = addonTable.UIInitFuncs
 local X = 50
 local config = Config("burst_potion_enabled")
 local cell
-config:set_default(false)
+config:set_default(true)
 
 insert(ConfigRows, {
     type = "combo",
     name = "爆发药水",
-    tooltip = "独立控制轮转使用圣光潜力，不随爆发开关联动。",
+    tooltip = "爆发窗口内且目标在反制射击范围时，自动使用鲁莽药水。",
     bind_config = config,
-    default_value = false,
+    default_value = true,
     options = {
         { k = false, v = "关闭" },
         { k = true, v = "开启" },

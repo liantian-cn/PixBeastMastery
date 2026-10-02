@@ -1,14 +1,19 @@
-# PixRetribution 像素布局
+# PixBeastMastery 像素布局
 
-Lua 的 `cells/NNN_name.lua`、本表与 `Context` 属性必须同时更新。此版本与 PixBlood 的职业字段不兼容，插件和 Python 必须配套使用。
+Lua Cell、Context和本表必须同步更新。插件与Python必须配套使用。
 
-## 基本协议
+## 编码
 
-- 正式模式 Cell 为 4×4 物理像素，基板高 12 px；位置由现有 Cell、ValueBar、IconTile 实现计算。截图和 Matrix 保持原协议。
-- 布尔通常白=真、黑=假；圣能直接使用灰度字节值。百分比为灰度 / 255 × 100。
-- 技能冷却沿用亮度 `0/25/115/155/255` 对应剩余秒数 `245/120/30/10/0` 的分段曲线；白=就绪，黑也可能表示技能未知或不可用，不能当成就绪。
-- 审判充能使用单个 CellBackplate 承载实心字符，RGB 灰度字节直接表示 0–2 充能，Python 四舍五入返回整数；零充能或缺失数据均为黑色。光环只读取存在性，由 AuraContainer 原生筛选和显隐。
-- 射程布尔代表指定技能射程，不代表精确码数。敌人数只包含射程可观察的姓名板，不能解释为完整的周围敌人数；自动模式计数为 0 时，不强行假定单体。
+正式模式每格4×4物理像素，基板12px高。普通区占1–75列，加左右检测列总宽308px。IconTile仍为8×8，位于基板下方两行。Capture和Matrix协议不变。
+
+- 布尔：白255为真、黑0为假。
+- 灰度整数：直接读取字节并四舍五入，不除255。
+- 百分比：灰度/255×100；集中值点数=四舍五入(第6格比例×第61格上限)。上限不在100–120时按0点处理。
+- 冷却：亮度0/25/115/155/255对应245/120/30/10/0秒；黑色也包含未知技能和缺失数据，不表示就绪。
+- 充能：currentCharges和maxCharges经原生文字显示秘密计数，Python读取灰度。最大充能>0且当前充能≥上限时，下一层恢复时间视为0；否则读取62格。没有恢复对象时62格为黑。
+- 攻击模式先按人数≥2计算IsAOE，再由10/20强制覆盖；自动模式0人也按单体。
+- 所有攻击射程字段均参考反制射击147362，包括保留名称中的melee/ranged；坦克误导范围单独使用34477。
+- 施法剩余时间按0.1秒量化；空闲为0，须同时检查可打断状态及施法图标，不能只靠秒数判断。
 
 ## 普通区
 
@@ -19,20 +24,20 @@ Lua 的 `cells/NNN_name.lua`、本表与 `Context` 属性必须同时更新。�
 | 3 | `delaying` | Cell / 布尔 | 白=延迟中；Python 暂停全部自动动作，包括打断、自保和物品。 |
 | 4 | `player_is_alive` | Cell / 布尔 | 玩家存活 |
 | 5 | `player_health_pct` | Cell / 百分比 | 玩家生命值（百分比） |
-| 6 | `power_holy_power` | Cell / 整数 | 圣能；普通整数直接编码为灰度字节，Python 四舍五入读取；秘密值或非法整数明确报错。 |
-| 7 | `force_single_target` | Cell / 布尔 | 白=强制单体，黑=自动；默认自动，配置持久化。强制单体仍允许四件套特殊风暴规则。 |
+| 6 | `power_focus_pct` | 百分比 | UnitPowerPercent，灰度/255×100；与61格组合还原点数 |
+| 7 | `attack_mode` | 枚举 | 灰度0自动、10单体、20AOE；脱战及重载恢复0 |
 | 8 | `player_in_combat` | Cell / 布尔 | 玩家是否处于战斗。 |
 | 9 | `player_is_player_target` | Cell / 布尔 | 玩家的目标是自己 |
 | 10 | `player_is_moving` | Cell / 布尔 | 玩家正在移动 |
 | 11 | `player_in_vehicle` | Cell / 布尔 | 玩家在坐骑/载具上 |
 | 12 | `player_is_targeting_spell` | Cell / 布尔 | 玩家在选取施法目标的状态 |
 | 13 | `player_is_chatting` | Cell / 布尔 | 玩家在聊天 |
-| 14 | `ticket_13_ready` | Cell / 布尔 | 一号饰品可用（SLOT 13）；自动饰品开启、爆发窗口内且目标在 853 射程内时优先使用。 |
+| 14 | `ticket_13_ready` | Cell / 布尔 | 一号饰品可用（SLOT 13）；自动饰品开启、爆发窗口内且目标在 147362 射程内时优先使用。 |
 | 15 | `ticket_14_ready` | Cell / 布尔 | 二号饰品可用（SLOT 14）；同上，优先级低于一号饰品，每轮重新读取可用状态。 |
 | 16 | `healthstone_ready` | Cell / 布尔 | 治疗石 item:5512；冷却启用且物品可使用时为白色。 |
 | 17 | `heal_potion_ready` | Cell / 布尔 | 银月城生命药水 item:241304；冷却启用且物品可使用时为白色。 |
 | 18 | `player_has_heal_absorb` | StatusBar / 阈值布尔 | 玩家有治疗吸收盾(250,000以上) |
-| 19 | `player_has_damage_absorb` | StatusBar / 阈值布尔 | 玩家有治疗吸收盾(500,000以上) |
+| 19 | `player_has_damage_absorb` | StatusBar / 阈值布尔 | 玩家有伤害吸收盾(500,000以上) |
 | 20 | `player_cast_progress` | Cell / 百分比 | 玩家的cast/channel进度 |
 | 21 | `player_is_empowering` | Cell / 布尔 | 玩家是否在蓄力 |
 | 22 | `target_is_exists` | Cell / 布尔 | 目标存在 |
@@ -42,9 +47,9 @@ Lua 的 `cells/NNN_name.lua`、本表与 `Context` 属性必须同时更新。�
 | 26 | `target_health_pct` | Cell / 百分比 | 目标生命值（百分比） |
 | 27 | `target_cast_interruptible` | Cell / 布尔 | 目标可打断 |
 | 28 | `target_cast_progress` | Cell / 百分比 | 目标的cast/channel进度 |
-| 29 | `target_in_melee_range` | Cell / 布尔 | target 在责难 96231 技能射程内；nil 或无单位显示黑色。 |
-| 30 | `target_in_ranged_range` | Cell / 布尔 | target 在最终审判 383328 技能射程内；不是精确 20 码测距。 |
-| 31 | `target_in_interrupt_range` | Cell / 布尔 | target 在责难 96231 技能射程内；nil 或无单位显示黑色。 |
+| 29 | `target_in_melee_range` | 布尔 | 单位在反制射击147362射程内；nil或无单位显示黑色。 |
+| 30 | `target_in_ranged_range` | 布尔 | 单位在反制射击147362射程内；nil或无单位显示黑色。 |
+| 31 | `target_in_interrupt_range` | 布尔 | 单位在反制射击147362射程内；nil或无单位显示黑色。 |
 | 32 | `focus_is_exists` | Cell / 布尔 | 焦点存在 |
 | 33 | `focus_is_alive` | Cell / 布尔 | 焦点存活 |
 | 34 | `focus_can_attack` | Cell / 布尔 | 焦点可攻击 |
@@ -52,59 +57,62 @@ Lua 的 `cells/NNN_name.lua`、本表与 `Context` 属性必须同时更新。�
 | 36 | `focus_health_pct` | Cell / 百分比 | 焦点生命值（百分比） |
 | 37 | `focus_cast_interruptible` | Cell / 布尔 | 焦点可打断 |
 | 38 | `focus_cast_progress` | Cell / 百分比 | 焦点的cast/channel进度 |
-| 39 | `focus_in_melee_range` | Cell / 布尔 | focus 在责难 96231 技能射程内；nil 或无单位显示黑色。 |
-| 40 | `focus_in_ranged_range` | Cell / 布尔 | focus 在最终审判 383328 技能射程内；不是精确 20 码测距。 |
-| 41 | `focus_in_interrupt_range` | Cell / 布尔 | focus 在责难 96231 技能射程内；nil 或无单位显示黑色。 |
+| 39 | `focus_in_melee_range` | 布尔 | 单位在反制射击147362射程内；nil或无单位显示黑色。 |
+| 40 | `focus_in_ranged_range` | 布尔 | 单位在反制射击147362射程内；nil或无单位显示黑色。 |
+| 41 | `focus_in_interrupt_range` | 布尔 | 单位在反制射击147362射程内；nil或无单位显示黑色。 |
 | 42 | `spell_cd_global_cooldown` | Cell / 冷却曲线 | [Global Cooldown]。SPELLID:61304 的冷却时间,ignore_gcd = false |
-| 43 | `spell_cd_rebuke` | Cell / 冷却曲线 | 责难 96231 冷却。 |
-| 44 | `spell_cd_avenging_wrath` | Cell / 冷却曲线 | 复仇之怒 31884 冷却。 |
-| 45 | `spell_cd_execution_sentence` | Cell / 冷却曲线 | 处决宣判 343527 冷却。 |
-| 46 | `spell_cd_wake_of_ashes` | Cell / 冷却曲线 | 灰烬觉醒 255937 冷却。 |
-| 47 | `spell_cd_blade_of_justice` | Cell / 冷却曲线 | 公正之剑 184575 冷却。 |
-| 48 | `spell_charges_judgment` | Cell / 0–2 | 审判 20271；RGB 灰度字节直接表示充能数，Python 四舍五入返回整数；零充能或缺失数据均为黑色。 |
-| 49 | `mouseover_in_melee_range` | Cell / 布尔 | 鼠标指向在责难 96231 技能射程内；保留监控，不用于手动插入。 |
-| 50 | `burst_potion_enabled` | Cell / 布尔 | 独立爆发药水开关；默认关闭，配置持久化，不随爆发窗口联动。 |
-| 51 | `spell_cd_divine_toll` | Cell / 冷却曲线 | 圣洁鸣钟 375576 冷却。 |
-| 52 | `spell_cd_lay_on_hands` | Cell / 冷却曲线 | 圣疗术 633 冷却。 |
-| 53 | `spell_cd_divine_shield` | Cell / 冷却曲线 | 圣盾术 642 冷却。 |
-| 54 | `item_cd_lights_potential` | Cell / 布尔 | 圣光潜力 item:241308 有非银行库存且冷却结束；沿用原监控。宏保留 241308、241309。 |
-| 55 | `player_has_buff_avenging_wrath` | Cell / 布尔 | 玩家复仇之怒 31884 是否存在。 |
-| 56 | `player_has_buff_divine_purpose` | Cell / 布尔 | 玩家神圣意志 408458 是否存在；按源 JSON 的 ID，不替换成 223819。 |
-| 57 | `player_has_buff_dawnlight` | Cell / 布尔 | 玩家晨光 431522 是否存在；无需层数或剩余时间。 |
-| 58 | `player_has_buff_art_of_war` | Cell / 布尔 | 玩家战争艺术 406086 是否存在。 |
-| 59 | `player_has_buff_divine_arbiter_storm` | Cell / 布尔 | 玩家神圣仲裁风暴 1306162 是否存在。 |
-| 60 | `four_piece_enabled` | Cell / 布尔 | 白=启用四件套规则，黑=关闭；默认开启，配置持久化。 |
-| 61 | `target_in_blade_of_justice_range` | Cell / 布尔 | 目标在公正之剑 184575 技能射程内；不是精确 12 码测距。 |
-| 62 | `target_in_judgment_range` | Cell / 布尔 | 目标在审判 20271 技能射程内。 |
-| 63 | `target_in_hammer_of_justice_range` | Cell / 布尔 | 目标在制裁之锤 853 技能射程内；七个输出技能及自动饰品统一使用，nil 或无目标为黑色。 |
-| 64 | `player_has_dispellable_poison_or_disease` | Cell / 布尔 | 玩家自身存在可驱散的中毒或疾病；AuraContainer 使用 HARMFUL\|RAID_PLAYER_DISPELLABLE 及 Poison、Disease 类型筛选，不检查其他单位。 |
-| 65 | `spell_cd_cleanse_toxins` | Cell / 冷却曲线 | 清毒术 213644 冷却，忽略 GCD；技能未知或不可用为黑色，不视为就绪。 |
-| 66 | `auto_cleanse_enabled` | Cell / 布尔 | 自动清毒开关，默认开启，游戏内配置持久化。 |
-| 67 | `auto_trinket_enabled` | Cell / 布尔 | 自动饰品开关，默认开启，游戏内配置持久化。 |
-| 68 | `player_melee_enemies_count` | Cell / 0–40 | 制裁之锤 853 范围内可观察、存活、可攻击的姓名板敌人数；保留历史字段名，不要求入战；上限 40，灰度=count/40，每 0.2 秒刷新。秘密或 nil 射程不计入。 |
+| 43 | `spell_cd_counter_shot` | 冷却 | 反制射击147362 |
+| 44 | `spell_cd_bestial_wrath` | 冷却 | 狂野怒火19574 |
+| 45 | `spell_cd_wild_thrash` | 冷却 | 狂野鞭笞1264359 |
+| 46 | `spell_cd_kill_command` | 冷却 | 杀戮命令34026；同时参考74格充能 |
+| 47 | `spell_cd_barbed_shot` | 冷却 | 倒刺射击217200；同时参考48格充能 |
+| 48 | `spell_charges_barbed_shot` | 整数 | 倒刺射击当前充能；灰度字节即数量 |
+| 49 | `mouseover_in_melee_range` | 布尔 | 鼠标单位在147362射程 |
+| 50 | `burst_potion_enabled` | 布尔 | 自动鲁莽药水开关，默认开启 |
+| 51 | `spell_cd_mend_pet` | 冷却 | 治疗宠物136 |
+| 52 | `spell_cd_exhilaration` | 冷却 | 意气风发109304 |
+| 53 | `spell_cd_misdirection` | 冷却 | 误导34477 |
+| 54 | `reckless_potion_ready` | 布尔 | 241288或241289有库存且冷却好 |
+| 55 | `player_has_buff_pack_wyvern` | 布尔 | 玩家增益471878 |
+| 56 | `player_has_buff_natures_ally` | 布尔 | 玩家增益1276720 |
+| 57 | `player_has_buff_pack_boar` | 布尔 | 玩家增益472324 |
+| 58 | `player_has_buff_pack_bear` | 布尔 | 玩家增益472325 |
+| 59 | `player_has_buff_cobra_fangs` | 布尔 | 眼镜蛇利牙1299389 |
+| 60 | `finishing` | 布尔 | 收尾开关：0关闭、255开启；脱战及重载关闭 |
+| 61 | `power_focus_max` | 整数 | 配置集中值上限100–120，默认100，灰度直接表示点数 |
+| 62 | `spell_recharge_barbed_shot` | 冷却曲线 | 倒刺射击下一层充能剩余时间；满充能由48和75格识别 |
+| 63 | `pet_is_exists` | 布尔 | 宠物存在 |
+| 64 | `pet_is_alive` | 布尔 | 宠物存在且存活 |
+| 65 | `pet_health_pct` | 百分比 | 宠物预测生命比例 |
+| 66 | `party_tank_index` | 整数 | 0无合格坦克，1–4表示party编号；只选存活在线坦克 |
+| 67 | `auto_trinket_enabled` | 布尔 | 自动饰品开关，默认开启 |
+| 68 | `player_enemies_count` | 比例计数 | 灰度/255×40并四舍五入；147362范围内可攻击、存活、战斗中的可观察姓名板数量 |
+| 69 | `player_in_party` | 布尔 | 在小队且不在团队 |
+| 70 | `spell_known_misdirection` | 布尔 | 误导34477已学会 |
+| 71 | `party_tank_in_misdirection_range` | 布尔 | 66格选中的坦克在34477射程内 |
+| 72 | `target_cast_remaining` | 秒数 | 目标施法/引导剩余时间，灰度/10，25.5秒饱和 |
+| 73 | `focus_cast_remaining` | 秒数 | 焦点施法/引导剩余时间，灰度/10，25.5秒饱和 |
+| 74 | `spell_charges_kill_command` | 整数 | 杀戮命令当前充能 |
+| 75 | `spell_max_charges_barbed_shot` | 整数 | 倒刺射击最大充能；0表示缺失 |
 
-普通区连续占用 1–68 格；审判充能仅占第 48 格。其余旧 DK 专属字段、光环层数条和沸点计时已移除。
+## IconTile
 
-第 29、30、39、40、49、61、62 格保留原射程监控，不用于输出循环的距离判断。责难仍使用第 31、41 格自身射程。审判、公正之剑、灰烬觉醒、最终审判、神圣风暴、圣洁鸣钟、处决宣判均使用第 63 格；AOE 使用第 68 格，至少 2 个进入多目标，保留强制单体规则。
+| 槽位 | 内容 |
+| --- | --- |
+| I01 | 玩家施法/引导图标 |
+| I02 | 游戏辅助战斗推荐技能图标 |
+| I03 | 目标施法/引导图标 |
+| I04 | 焦点施法/引导图标 |
+| I05–I19 | 打断黑名单，法术ID升序取前15项；加载失败留空 |
 
-自动动作沿用现有入口限制：插件启用、玩家存活且在战斗、有可攻击目标，并且不处于手动延迟、载具、聊天、地面选点或施法状态。优先级为原打断与自保、治疗石、治疗药水、清毒、原爆发药水、上饰品、下饰品、复仇之怒、其余输出。清毒同时要求第 64 格为真和清毒冷却就绪；饰品要求 `in_burst`、第 63 格及对应槽位可用，每轮最多使用一个。
+黑名单默认ID保留1241214、1228176、371984、384194、1294815。匹配沿用Matrix的内区裁剪和指纹算法；黑底表示无图标。可打断判断必须有当前施法图标，并且不在黑名单中。
 
-新增宏与 Python 键位对应：`RSHIFT-NUMPAD7` → `/cast [@player]清毒术`；`RSHIFT-NUMPAD8` → `/use 13`；`RSHIFT-NUMPAD9` → `/use 14`。
+## 刷新与控制
 
-## IconTile 区（保持原位置）
+冷却、充能恢复、射程和施法剩余时间保留0.1秒刷新；充能数量由事件更新并每秒兜底；资源/生命由对应事件刷新，光环由AuraContainer原生绑定。
 
-| 位置 | 字段 | 含义 |
-| --- | --- | --- |
-| I01 | `player_cast_icon` | 玩家施法／引导图标。 |
-| I02 | `assisted_combat_icon` | 游戏辅助战斗推荐图标；不替代本项目手写循环。 |
-| I03 | `target_cast_icon` | 目标施法／引导图标。 |
-| I04 | `focus_cast_icon` | 焦点施法／引导图标。 |
-| I05–I19 | `interrupt_blacklist` | 按法术 ID 升序取前 15 个黑名单图标；加载失败的槽位留空。 |
+敌人数按姓名板及进出战斗事件刷新，每秒兜底。坦克编号在进入地图、队伍/职责、连接、生命状态及进出战斗时更新，每2秒兜底；误导射程每0.1秒刷新。
 
-`Context.target_cast_interruptible` 和 `focus_cast_interruptible` 同时要求可打断 cell 为真、施法图标非空、图标不在黑名单。Rotation 再检查对应单位有效性、责难冷却和责难射程。两个单位均满足时优先焦点。
+攻击模式与收尾按钮的设置、命令、显示分别完全位于007和060文件中。状态脱战/重载恢复默认，位置单独持久化；上限与消耗品开关保存在PixBeastMasteryDB中。
 
-## 游戏内验收
-
-本表描述编码约定，不表示已通过游戏实测。安装配套插件后核对：圣能 0–5、审判 0/1/2 充能、五个 buff 的出现与消失、四件套与输出模式开关、目标／焦点责难射程、853 射程及范围敌人数、爆发和延迟状态，以及图标黑名单。保持 `debug = false`，先用 `uv run python -m pix.test_captura` 检查定位。
-
-新增行为验收：验证七个输出技能超出 853 射程时不触发；AOE 计数 0/1/2 及强制单体；自身中毒、疾病、不可驱散减益、仅队友中毒、清毒冷却和开关关闭；爆发窗口、目标超距、单个或两个饰品就绪、共用冷却和开关关闭。确认两个开关重新加载后保持设置，以及清毒、饰品遵守上述优先级。
+秘密充能、冷却、施法时间和实际灰度渲染仍须在游戏内验证；语法和Python验证不能代替客户端验收。

@@ -1,4 +1,4 @@
-"""PixRetribution desktop application entry point."""
+"""PixBeastMastery desktop application entry point."""
 
 import ctypes
 import subprocess

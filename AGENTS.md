@@ -2,7 +2,7 @@
 
 ## Architecture & Project Structure
 
-PixRetribution targets the Herald of the Sun Retribution Paladin specialization. Use Python 3.13 and PySide6. Keep the design minimal: one project, one rotation, one configuration. Do not introduce multiple rotations or configuration profiles.
+PixBeastMastery targets the Pack Leader Beast Mastery Hunter specialization. Use Python 3.13 and PySide6. Keep the design minimal: one project, one rotation, one configuration. Do not introduce multiple rotations or configuration profiles.
 
 - `pix/capture.py`: screenshot algorithms and capture worker.
 - `pix/matrix.py`: pixel decoding algorithms.
@@ -26,11 +26,11 @@ Python modules implement the third-edition plan. Preserve these module boundarie
 - `uv run python -m compileall pix`: check Python syntax without launching the application.
 - `git diff --check`: check patch whitespace.
 
-Dependencies are maintained in `pyproject.toml` and `uv.lock` using uv. No build pipeline or automated test framework is configured. For addon validation, install the contents of `pix/lua/` into WoW's `Interface/AddOns/PixRetribution/`, then use `/reload` in game.
+Dependencies are maintained in `pyproject.toml` and `uv.lock` using uv. No build pipeline or automated test framework is configured. For addon validation, install the contents of `pix/lua/` into WoW's `Interface/AddOns/PixBeastMastery/`, then use `/reload` in game.
 
 ## Coding Style & Naming
 
-Use four-space indentation and LF line endings. For Python, use `snake_case` functions/modules and `PascalCase` classes. Follow neighboring Lua conventions, share addon state through `addonTable`, and preserve initialization order in `PixRetribution.toc`. Retain cell names such as `001_enable.lua` and `I01_player_cast_icon.lua`; coordinate position changes with `layout.md`. No formatter or linter is configured.
+Use four-space indentation and LF line endings. For Python, use `snake_case` functions/modules and `PascalCase` classes. Follow neighboring Lua conventions, share addon state through `addonTable`, and preserve initialization order in `PixBeastMastery.toc`. Retain cell names such as `001_enable.lua` and `I01_player_cast_icon.lua`; coordinate position changes with `layout.md`. No formatter or linter is configured.
 
 ## Testing Guidelines
 

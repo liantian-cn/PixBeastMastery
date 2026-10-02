@@ -1,4 +1,4 @@
--- 第 56 格显示玩家的神圣意志增益：存在为白色，否则为黑色。
+-- 玩家增益 1276720 是否存在。
 -- 原生光环容器负责匹配与显隐，不读取秘密光环数据。
 local addonName, addonTable    = ...
 
@@ -19,7 +19,7 @@ local UIInitFuncs             = addonTable.UIInitFuncs
 
 -- 本地配置与状态
 local X = 56
-local AURA_IDS = { 408458 }
+local AURA_IDS = { 1276720 }
 local eventFrame              = CreateFrame("Frame")
 local container
 

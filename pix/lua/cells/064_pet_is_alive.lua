@@ -1,4 +1,4 @@
--- 技能射程；无单位或普通 nil 结果显示黑色。
+-- 单位状态直接交给布尔颜色消费者。
 local addonName, addonTable = ...
 
 -- Lua 内置方法
@@ -11,8 +11,7 @@ local CreateFrame = CreateFrame
 local After = C_Timer.After
 local EvaluateColorFromBoolean = C_CurveUtil.EvaluateColorFromBoolean
 local UnitExists = UnitExists
-local IsSpellInRange = C_Spell.IsSpellInRange
-local issecretvalue = issecretvalue
+local UnitIsDeadOrGhost = UnitIsDeadOrGhost
 
 -- 项目引用
 local Cell = addonTable.Cell
@@ -20,19 +19,14 @@ local COLOR = addonTable.COLOR
 local UIInitFuncs = addonTable.UIInitFuncs
 
 -- 本地配置
-local X = 62
-local SPELL_ID = 20271
+local X = 64
 local cell
 local eventFrame = CreateFrame("Frame")
 
 local function Update()
     if not cell then return end
-    local inRange = IsSpellInRange(SPELL_ID, "target")
-    if not issecretvalue(inRange) and inRange == nil then
-        inRange = false
-    end
-    local rangeColor = EvaluateColorFromBoolean(inRange, COLOR.WHITE, COLOR.BLACK)
-    local color = EvaluateColorFromBoolean(UnitExists("target"), rangeColor, COLOR.BLACK)
+    local stateColor = EvaluateColorFromBoolean(UnitIsDeadOrGhost("pet"), COLOR.BLACK, COLOR.WHITE)
+    local color = EvaluateColorFromBoolean(UnitExists("pet"), stateColor, COLOR.BLACK)
     cell:setCell(color)
 end
 
@@ -42,18 +36,19 @@ local function Initialize()
 end
 
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-eventFrame:RegisterEvent("PLAYER_TARGET_CHANGED")
-eventFrame:RegisterEvent("SPELLS_CHANGED")
-
+eventFrame:RegisterEvent("UNIT_PET")
+eventFrame:RegisterUnitEvent("UNIT_FLAGS", "pet")
+eventFrame:RegisterUnitEvent("UNIT_FACTION", "pet")
+eventFrame:RegisterUnitEvent("UNIT_HEALTH", "pet")
 eventFrame:SetScript("OnEvent", function()
     After(0, Update)
 end)
 
-local elapsedTime = -random() * 0.1
+local elapsedTime = -random()
 eventFrame:SetScript("OnUpdate", function(_, elapsed)
     elapsedTime = elapsedTime + elapsed
-    if elapsedTime >= 0.1 then
-        elapsedTime = elapsedTime % 0.1
+    if elapsedTime >= 1 then
+        elapsedTime = elapsedTime % 1
         Update()
     end
 end)

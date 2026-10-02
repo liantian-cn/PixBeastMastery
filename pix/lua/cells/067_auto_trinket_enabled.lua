@@ -16,7 +16,7 @@ config:set_default(true)
 insert(ConfigRows, {
     type = "combo",
     name = "自动饰品",
-    tooltip = "爆发窗口内且目标处于制裁之锤射程时，在复仇之怒之前依次使用上、下饰品。",
+    tooltip = "爆发窗口内且目标处于反制射击射程时，在输出技能之前依次使用上、下饰品。",
     bind_config = config,
     default_value = true,
     options = {

@@ -1,4 +1,4 @@
--- 第 59 格显示玩家的神圣仲裁风暴增益：存在为白色，否则为黑色。
+-- 玩家增益 1299389 是否存在。
 -- 原生光环容器负责匹配与显隐，不读取秘密光环数据。
 local addonName, addonTable    = ...
 
@@ -19,7 +19,7 @@ local UIInitFuncs             = addonTable.UIInitFuncs
 
 -- 本地配置与状态
 local X = 59
-local AURA_IDS = { 1306162 }
+local AURA_IDS = { 1299389 }
 local eventFrame              = CreateFrame("Frame")
 local container
 
