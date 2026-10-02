@@ -74,7 +74,7 @@ Lua Cell、Context和本表必须同步更新。插件与Python必须配套使�
 | 53 | `spell_cd_misdirection` | 冷却 | 误导34477 |
 | 54 | `reckless_potion_ready` | 布尔 | 241288或241289有库存且冷却好 |
 | 55 | `player_has_buff_pack_wyvern` | 布尔 | 玩家增益471878 |
-| 56 | `player_has_buff_natures_ally` | 布尔 | 玩家增益1276720 |
+| 56 | `player_has_buff_natures_ally` | 布尔 | 玩家自然之友（Nature’s Ally）增益1276720 |
 | 57 | `player_has_buff_pack_boar` | 布尔 | 玩家增益472324 |
 | 58 | `player_has_buff_pack_bear` | 布尔 | 玩家增益472325 |
 | 59 | `player_has_buff_cobra_fangs` | 布尔 | 眼镜蛇利牙1299389 |

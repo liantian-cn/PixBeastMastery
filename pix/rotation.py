@@ -103,6 +103,7 @@ class Rotation:
                 return Cast("狂野鞭笞")
             if not IsAOE and not ctx.finishing and ctx.spell_cd_bestial_wrath == 0:
                 return Cast("狂野怒火")
+            # 杀戮命令要求自然之友增益存在。
             if (focus >= 30 and ctx.spell_cd_kill_command == 0 and ctx.spell_charges_kill_command > 0
                     and ctx.player_has_buff_natures_ally):
                 return Cast("杀戮命令")

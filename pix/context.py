@@ -258,6 +258,7 @@ class Context:
 
     @property
     def player_has_buff_natures_ally(self) -> bool:
+        # 玩家是否存在自然之友（Nature’s Ally，1276720）增益。
         return self.readBooleanCell(56)
 
     @property
