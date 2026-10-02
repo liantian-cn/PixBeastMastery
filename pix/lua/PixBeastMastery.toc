@@ -1,6 +1,6 @@
 ## Interface: 120100
 ## Title: 猎人-兽王（猎群领袖）
-## Version: 12.1.0.68209
+## Version: 12.1.0.69933
 ## Category: Tools
 ## SavedVariables: PixBeastMasteryDB
 ## LoadSavedVariablesFirst: 1
