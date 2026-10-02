@@ -91,6 +91,7 @@ cells\072_target_cast_remaining.lua
 cells\073_focus_cast_remaining.lua
 cells\074_spell_charges_kill_command.lua
 cells\075_spell_max_charges_barbed_shot.lua
+cells\076_player_has_buff_beast_cleave.lua
 cells\I01_player_cast_icon.lua
 cells\I02_assisted_combat_icon.lua
 cells\I03_target_cast_icon.lua

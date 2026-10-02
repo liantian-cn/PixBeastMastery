@@ -4,7 +4,7 @@ Lua Cell、Context和本表必须同步更新。插件与Python必须配套使�
 
 ## 编码
 
-正式模式每格4×4物理像素，基板12px高。普通区占1–75列，加左右检测列总宽308px。IconTile仍为8×8，位于基板下方两行。Capture和Matrix协议不变。
+正式模式每格4×4物理像素，基板12px高。普通区占1–76列，加左右检测列总宽312px。IconTile仍为8×8，位于基板下方两行。Capture和Matrix协议不变。
 
 - 布尔：白255为真、黑0为假。
 - 灰度整数：直接读取字节并四舍五入，不除255。
@@ -94,6 +94,7 @@ Lua Cell、Context和本表必须同步更新。插件与Python必须配套使�
 | 73 | `focus_cast_remaining` | 秒数 | 焦点施法/引导剩余时间，灰度/10，25.5秒饱和 |
 | 74 | `spell_charges_kill_command` | 整数 | 杀戮命令当前充能 |
 | 75 | `spell_max_charges_barbed_shot` | 整数 | 倒刺射击最大充能；0表示缺失 |
+| 76 | `player_has_buff_beast_cleave` | 布尔 | 玩家野兽顺劈（Beast Cleave）增益268877是否存在 |
 
 ## IconTile
 

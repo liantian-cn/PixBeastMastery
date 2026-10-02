@@ -17,6 +17,8 @@ PixBeastMastery targets the Pack Leader Beast Mastery Hunter specialization. Use
 
 Python modules implement the third-edition plan. Preserve these module boundaries as implementation proceeds.
 
+Before analyzing, comparing, or modifying the core DPS rotation, read [docs/rotation-notes.md](docs/rotation-notes.md). It records user-confirmed rotation rules and their implementation. Keep core DPS priority discussions separate from interrupts, damage reduction, and other non-DPS actions.
+
 ## Development & Validation Commands
 
 - `uv sync --python 3.13`: synchronize the local environment and development dependencies.

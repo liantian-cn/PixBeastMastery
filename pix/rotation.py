@@ -93,12 +93,15 @@ class Rotation:
             thrash_cd = ctx.spell_cd_wild_thrash
             single_or_thrash_cooling = not IsAOE or thrash_cd > 0
 
+            if (IsAOE and ctx.spell_cd_bestial_wrath == 0 and not ctx.finishing
+                    and ctx.player_has_buff_beast_cleave):
+                return Cast("狂野怒火", "野兽顺劈期间优先")
             if barbed_ready and (ctx.spell_recharge_barbed_shot < 2
                                  or (not IsAOE and ctx.spell_cd_bestial_wrath < 3)):
                 return Cast("倒刺射击", "充能将满或单体怒火将就绪")
             if IsAOE and focus >= 35 and thrash_cd == 0:
                 return Cast("狂野鞭笞")
-            if not ctx.finishing and ctx.spell_cd_bestial_wrath == 0 and single_or_thrash_cooling:
+            if not IsAOE and not ctx.finishing and ctx.spell_cd_bestial_wrath == 0:
                 return Cast("狂野怒火")
             if (focus >= 30 and ctx.spell_cd_kill_command == 0 and ctx.spell_charges_kill_command > 0
                     and ctx.player_has_buff_natures_ally):
