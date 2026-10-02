@@ -54,8 +54,8 @@ table.insert(addonTable.UIInitFuncs, function()
     cell = addonTable.Cell:New({ x = 60 })
     button = CreateFrame("Button", addonName .. "FinishingFrame", UIParent)
     addonTable.FinishingFrame = button
-    local px = addonTable.GetUIScaleFactor
-    button:SetSize(px(100), px(24))
+    -- 控制按钮使用原生 UI 单位，不参与像素采样区的分辨率换算。
+    button:SetSize(100, 24)
     button:SetFrameStrata("DIALOG")
     button:SetClampedToScreen(true)
     button:SetMovable(true)
@@ -66,7 +66,7 @@ table.insert(addonTable.UIInitFuncs, function()
         if type(saved) == "table" and type(saved.x) == "number" and type(saved.y) == "number" then
             button:SetPoint("CENTER", UIParent, "CENTER", saved.x, saved.y)
         else
-            button:SetPoint("CENTER", UIParent, "CENTER", 0, px(-144))
+            button:SetPoint("CENTER", UIParent, "CENTER", 0, -144)
         end
     end
     local anchor = addonTable.AttackModeFrame
@@ -78,12 +78,12 @@ table.insert(addonTable.UIInitFuncs, function()
     background = button:CreateTexture(nil, "BACKGROUND")
     background:SetAllPoints(button)
     icon = button:CreateTexture(nil, "ARTWORK")
-    icon:SetSize(px(18), px(18))
-    icon:SetPoint("LEFT", button, "LEFT", px(3), 0)
+    icon:SetSize(18, 18)
+    icon:SetPoint("LEFT", button, "LEFT", 3, 0)
     label = button:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    label:SetFont(GameFontNormal:GetFont(), px(12), "")
-    label:SetPoint("LEFT", icon, "RIGHT", px(4), 0)
-    label:SetPoint("RIGHT", button, "RIGHT", -px(3), 0)
+    label:SetFont(GameFontNormal:GetFont(), 12, "")
+    label:SetPoint("LEFT", icon, "RIGHT", 4, 0)
+    label:SetPoint("RIGHT", button, "RIGHT", -3, 0)
     label:SetJustifyH("LEFT")
     local dragging = false
     button:SetScript("OnDragStart", function()
