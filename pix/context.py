@@ -370,6 +370,10 @@ class Context:
         return self.readPercentCell(83)
 
     @property
+    def player_has_buff_bestial_wrath(self) -> bool:
+        return self.readBooleanCell(84)
+
+    @property
     def power_focus(self) -> int:
         maximum = self.power_focus_max
         if not 100 <= maximum <= 120:

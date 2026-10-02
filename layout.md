@@ -4,7 +4,7 @@ Lua Cell、Context和本表必须同步更新。插件与Python必须配套使�
 
 ## 编码
 
-正式模式每格4×4物理像素，基板12px高。普通区占1–83列，加左右检测列总宽340px。IconTile仍为8×8，位于基板下方两行。Capture和Matrix协议不变。
+正式模式每格4×4物理像素，基板12px高。普通区占1–84列，加左右检测列总宽344px。IconTile仍为8×8，位于基板下方两行。Capture和Matrix协议不变。
 
 - 布尔：白255为真、黑0为假。
 - 灰度整数：直接读取字节并四舍五入，不除255。
@@ -103,6 +103,7 @@ Lua Cell、Context和本表必须同步更新。插件与Python必须配套使�
 | 81 | `mouseover_can_assist` | 布尔 | 鼠标单位存在且可协助 |
 | 82 | `mouseover_cast_interruptible` | 布尔 | 鼠标单位施法或引导可打断；Context额外检查图标存在且不在黑名单 |
 | 83 | `mouseover_cast_progress` | 百分比 | 鼠标单位施法或引导已经过百分比，空闲为0 |
+| 84 | `player_has_buff_bestial_wrath` | 布尔 | 玩家狂野怒火（Bestial Wrath）增益19574是否存在 |
 
 ## IconTile
 
