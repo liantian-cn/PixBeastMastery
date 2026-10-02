@@ -10,6 +10,7 @@ class Rotation:
             "倒刺射击": "RCTRL-NUMPAD1",
             "焦点反制射击": "RCTRL-NUMPAD2",
             "目标反制射击": "RCTRL-NUMPAD3",
+            "鼠标指向反制射击": "RSHIFT-NUMPAD0",
             "狂野怒火": "RCTRL-NUMPAD4",
             "狂野鞭笞": "RCTRL-NUMPAD5",
             "杀戮命令": "RCTRL-NUMPAD6",
@@ -56,12 +57,19 @@ class Rotation:
             return Idle("目标不可攻击")
 
         if ctx.spell_cd_counter_shot == 0:
+            # 三种打断共用已过进度阈值，按焦点、鼠标指向、目标依次判断。
+            interrupt_progress = ctx.interrupt_progress_threshold
             if (ctx.focus_is_exists and ctx.focus_is_alive and ctx.focus_can_attack
                     and not ctx.focus_can_assist and ctx.focus_in_interrupt_range
-                    and ctx.focus_cast_interruptible and ctx.focus_cast_remaining <= 5):
+                    and ctx.focus_cast_interruptible and ctx.focus_cast_progress > interrupt_progress):
                 return Cast("焦点反制射击")
-            if (not ctx.target_can_assist and ctx.target_in_interrupt_range
-                    and ctx.target_cast_interruptible and ctx.target_cast_remaining <= 5):
+            if (ctx.mouseover_interrupt_enabled and ctx.mouseover_is_exists and ctx.mouseover_is_alive
+                    and ctx.mouseover_can_attack and not ctx.mouseover_can_assist
+                    and ctx.mouseover_in_interrupt_range and ctx.mouseover_cast_interruptible
+                    and ctx.mouseover_cast_progress > interrupt_progress):
+                return Cast("鼠标指向反制射击")
+            if (ctx.target_interrupt_enabled and not ctx.target_can_assist and ctx.target_in_interrupt_range
+                    and ctx.target_cast_interruptible and ctx.target_cast_progress > interrupt_progress):
                 return Cast("目标反制射击")
 
         if ctx.player_health_pct <= 30 and ctx.healthstone_ready:

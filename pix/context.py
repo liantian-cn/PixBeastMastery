@@ -233,6 +233,10 @@ class Context:
         return self.readBooleanCell(49)
 
     @property
+    def mouseover_in_interrupt_range(self) -> bool:
+        return self.readBooleanCell(49)
+
+    @property
     def burst_potion_enabled(self) -> bool:
         return self.readBooleanCell(50)
 
@@ -314,12 +318,12 @@ class Context:
         return self.readBooleanCell(71)
 
     @property
-    def target_cast_remaining(self) -> float:
-        return self.readNumberCell(72) / 10.0
+    def target_interrupt_enabled(self) -> bool:
+        return self.readBooleanCell(72)
 
     @property
-    def focus_cast_remaining(self) -> float:
-        return self.readNumberCell(73) / 10.0
+    def mouseover_interrupt_enabled(self) -> bool:
+        return self.readBooleanCell(73)
 
     @property
     def spell_charges_kill_command(self) -> int:
@@ -332,6 +336,38 @@ class Context:
     @property
     def player_has_buff_beast_cleave(self) -> bool:
         return self.readBooleanCell(76)
+
+    @property
+    def interrupt_progress_threshold(self) -> int:
+        value = int(self.readNumberCell(77) + 0.5)
+        return value if 10 <= value <= 90 else 30
+
+    @property
+    def mouseover_is_exists(self) -> bool:
+        return self.readBooleanCell(78)
+
+    @property
+    def mouseover_is_alive(self) -> bool:
+        return self.readBooleanCell(79)
+
+    @property
+    def mouseover_can_attack(self) -> bool:
+        return self.readBooleanCell(80)
+
+    @property
+    def mouseover_can_assist(self) -> bool:
+        return self.readBooleanCell(81)
+
+    @property
+    def mouseover_cast_interruptible(self) -> bool:
+        if not self.readBooleanCell(82):
+            return False
+        icon = self.mouseover_cast_icon
+        return icon is not None and icon not in self.interrupt_blacklist
+
+    @property
+    def mouseover_cast_progress(self) -> float:
+        return self.readPercentCell(83)
 
     @property
     def power_focus(self) -> int:
@@ -367,6 +403,10 @@ class Context:
     @property
     def focus_cast_icon(self) -> str | None:
         return self.readIconTile(4)
+
+    @property
+    def mouseover_cast_icon(self) -> str | None:
+        return self.readIconTile(20)
 
     @property
     def interrupt_blacklist(self) -> list[str]:

@@ -87,15 +87,23 @@ cells\068_player_enemies_count.lua
 cells\069_player_in_party.lua
 cells\070_spell_known_misdirection.lua
 cells\071_party_tank_in_misdirection_range.lua
-cells\072_target_cast_remaining.lua
-cells\073_focus_cast_remaining.lua
+cells\072_target_interrupt_enabled.lua
+cells\073_mouseover_interrupt_enabled.lua
 cells\074_spell_charges_kill_command.lua
 cells\075_spell_max_charges_barbed_shot.lua
 cells\076_player_has_buff_beast_cleave.lua
+cells\077_interrupt_progress_threshold.lua
+cells\078_mouseover_is_exists.lua
+cells\079_mouseover_is_alive.lua
+cells\080_mouseover_can_attack.lua
+cells\081_mouseover_can_assist.lua
+cells\082_mouseover_cast_interruptible.lua
+cells\083_mouseover_cast_progress.lua
 cells\I01_player_cast_icon.lua
 cells\I02_assisted_combat_icon.lua
 cells\I03_target_cast_icon.lua
 cells\I04_focus_cast_icon.lua
 cells\I05_interrupt_blacklist.lua
+cells\I20_mouseover_cast_icon.lua
 
 macro.lua
