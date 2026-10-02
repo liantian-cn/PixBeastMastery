@@ -101,8 +101,7 @@ class Rotation:
             if not ctx.finishing and ctx.spell_cd_bestial_wrath == 0 and single_or_thrash_cooling:
                 return Cast("狂野怒火")
             if (focus >= 30 and ctx.spell_cd_kill_command == 0 and ctx.spell_charges_kill_command > 0
-                    and (ctx.player_has_buff_pack_wyvern or ctx.player_has_buff_natures_ally
-                         or ctx.player_has_buff_pack_boar or ctx.player_has_buff_pack_bear)):
+                    and ctx.player_has_buff_natures_ally):
                 return Cast("杀戮命令")
             if focus >= 35 and ctx.player_has_buff_cobra_fangs and single_or_thrash_cooling:
                 return Cast("眼镜蛇射击", "眼镜蛇利牙")
