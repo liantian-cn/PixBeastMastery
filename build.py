@@ -74,7 +74,7 @@ def main() -> int:
 
     # Export without changing the lock file or the project's development environment.
     requirements = build / "requirements.txt"
-    run(uv, "export", "--locked", "--no-dev", "--no-emit-project", "--no-header",
+    run(uv, "export", "--locked", "--no-dev", "--no-emit-project", "--no-header", "--quiet",
         "--output-file", requirements)
     python = environment / "Scripts/python.exe"
     if not python.is_file():
