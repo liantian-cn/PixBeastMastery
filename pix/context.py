@@ -374,6 +374,10 @@ class Context:
         return self.readBooleanCell(84)
 
     @property
+    def player_buff_beast_cleave_remaining(self) -> float:
+        return self.readAuraDurationCell(85)
+
+    @property
     def power_focus(self) -> int:
         maximum = self.power_focus_max
         if not 100 <= maximum <= 120:

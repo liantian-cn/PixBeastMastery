@@ -101,10 +101,11 @@ class Rotation:
             thrash_cd = ctx.spell_cd_wild_thrash
             single_or_thrash_cooling = not IsAOE or thrash_cd > 0
 
-            if IsAOE and focus >= 35 and thrash_cd == 0 and ctx.player_has_buff_bestial_wrath:
-                return Cast("狂野鞭笞", "狂野怒火增益期间优先")
+            # 暂停怒火增益期间的高优先级鞭笞，保留代码及增益读取。
+            # if IsAOE and focus >= 35 and thrash_cd == 0 and ctx.player_has_buff_bestial_wrath:
+            #     return Cast("狂野鞭笞", "狂野怒火增益期间优先")
             if (IsAOE and ctx.spell_cd_bestial_wrath == 0 and not ctx.finishing
-                    and ctx.player_has_buff_beast_cleave and thrash_cd < 1.5):
+                    and ctx.player_has_buff_beast_cleave and ctx.player_buff_beast_cleave_remaining > 4):
                 return Cast("狂野怒火", "野兽顺劈期间优先")
             if barbed_ready and (ctx.spell_recharge_barbed_shot < 2
                                  or (not IsAOE and ctx.spell_cd_bestial_wrath < 3)):
