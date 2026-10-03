@@ -4,7 +4,7 @@ Lua Cell、Context和本表必须同步更新。插件与Python必须配套使�
 
 ## 编码
 
-正式模式每格4×4物理像素，基板12px高。普通区占1–85列，加左右检测列总宽348px。IconTile仍为8×8，位于基板下方两行。Capture和Matrix协议不变。
+正式模式每格4×4物理像素，基板12px高。普通区占1–86列，加左右检测列总宽352px。IconTile仍为8×8，位于基板下方两行。Capture和Matrix协议不变。
 
 - 布尔：白255为真、黑0为假。
 - 灰度整数：直接读取字节并四舍五入，不除255。
@@ -105,6 +105,7 @@ Lua Cell、Context和本表必须同步更新。插件与Python必须配套使�
 | 83 | `mouseover_cast_progress` | 百分比 | 鼠标单位施法或引导已经过百分比，空闲为0 |
 | 84 | `player_has_buff_bestial_wrath` | 布尔 | 玩家狂野怒火（Bestial Wrath）增益19574是否存在 |
 | 85 | `player_buff_beast_cleave_remaining` | 光环剩余秒数 | 玩家野兽顺劈268877；亮度0/150/180/210/255对应0/15/30/60/240秒，0含不存在或到期，240含永久或上限饱和；原生DurationText绑定更新 |
+| 86 | `encounter_in_progress` | 布尔 | C_InstanceEncounter.IsEncounterInProgress()；遭遇战中白、否则黑，不区分编号，不附加玩家存活、战斗或目标条件；初始化读取、进入世界及状态变化后延后刷新，每秒兜底 |
 
 ## IconTile
 

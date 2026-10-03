@@ -378,6 +378,10 @@ class Context:
         return self.readAuraDurationCell(85)
 
     @property
+    def encounter_in_progress(self) -> bool:
+        return self.readBooleanCell(86)
+
+    @property
     def power_focus(self) -> int:
         maximum = self.power_focus_max
         if not 100 <= maximum <= 120:
