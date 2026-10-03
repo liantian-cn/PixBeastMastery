@@ -13,7 +13,7 @@ Lua 在游戏内显示状态，Python 读取像素并按优先级发送技能键
 
 ```powershell
 uv sync --python 3.13
-uv run python -m pix.main
+uv run pythonw -m pix
 ```
 
 1. 启动游戏，等待桌面程序识别 `wow.exe`。

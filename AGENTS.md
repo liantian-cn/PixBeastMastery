@@ -11,7 +11,7 @@ PixBeastMastery targets the Pack Leader Beast Mastery Hunter specialization. Use
 - `pix/rotation.py`: user-authored rotation.
 - `pix/action.py`: action objects and the sequential Action worker.
 - `pix/ui.py`: complete PySide6 UI implementation.
-- `pix/main.py`: application entry point. `pix/test_captura.py`: one-shot capture diagnostic.
+- `pix/__main__.py`: application entry point. `pix/test_captura.py`: one-shot capture diagnostic.
 - `pix/lua/`: WoW addon; `core/` contains initialization and configuration, `ui/` contains display components, and `cells/` contains numbered indicators. Fonts and textures live alongside Lua components.
 - `layout.md`: cell positions and meanings. `.context/`: accumulated experience and experiment notes; verify historical paths against the current tree.
 
@@ -22,7 +22,7 @@ Before analyzing, comparing, or modifying the core DPS rotation, read [docs/rota
 ## Development & Validation Commands
 
 - `uv sync --python 3.13`: synchronize the local environment and development dependencies.
-- `uv run python -m pix.main`: designated application entry point; use Python 3.13.
+- `uv run pythonw -m pix`: designated application entry point; use Python 3.13.
 - `uv run python -m pix.test_captura`: capture and locate once without sending keys.
 - `uv run pyright pix`: check types in basic mode.
 - `uv run python -m compileall pix`: check Python syntax without launching the application.
