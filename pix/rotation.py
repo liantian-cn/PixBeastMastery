@@ -95,6 +95,12 @@ class Rotation:
         elif ctx.attack_mode == 20:
             IsAOE = True
 
+        Isfinishing = not ctx.encounter_in_progress and ctx.target_health_pct < ctx.finishing_health_threshold
+        if ctx.finishing == 10:
+            Isfinishing = False
+        elif ctx.finishing == 20:
+            Isfinishing = True
+
         if attack_range:
             focus = ctx.power_focus
             barbed_ready = ctx.spell_cd_barbed_shot == 0 and ctx.spell_charges_barbed_shot > 0
@@ -104,7 +110,7 @@ class Rotation:
             # 暂停怒火增益期间的高优先级鞭笞，保留代码及增益读取。
             # if IsAOE and focus >= 35 and thrash_cd == 0 and ctx.player_has_buff_bestial_wrath:
             #     return Cast("狂野鞭笞", "狂野怒火增益期间优先")
-            if (IsAOE and ctx.spell_cd_bestial_wrath == 0 and not ctx.finishing
+            if (IsAOE and ctx.spell_cd_bestial_wrath == 0 and not Isfinishing
                     and ctx.player_has_buff_beast_cleave and ctx.player_buff_beast_cleave_remaining > 4):
                 return Cast("狂野怒火", "野兽顺劈期间优先")
             if barbed_ready and (ctx.spell_recharge_barbed_shot < 2
@@ -112,7 +118,7 @@ class Rotation:
                 return Cast("倒刺射击", "充能将满或单体怒火将就绪")
             if IsAOE and focus >= 35 and thrash_cd == 0:
                 return Cast("狂野鞭笞")
-            if not IsAOE and not ctx.finishing and ctx.spell_cd_bestial_wrath == 0:
+            if not IsAOE and not Isfinishing and ctx.spell_cd_bestial_wrath == 0:
                 return Cast("狂野怒火")
             # 杀戮命令要求自然之友增益存在。
             if (focus >= 30 and ctx.spell_cd_kill_command == 0 and ctx.spell_charges_kill_command > 0

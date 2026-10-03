@@ -278,8 +278,8 @@ class Context:
         return self.readBooleanCell(59)
 
     @property
-    def finishing(self) -> bool:
-        return self.readBooleanCell(60)
+    def finishing(self) -> int:
+        return int(self.readNumberCell(60) + 0.5)
 
     @property
     def power_focus_max(self) -> int:
@@ -380,6 +380,11 @@ class Context:
     @property
     def encounter_in_progress(self) -> bool:
         return self.readBooleanCell(86)
+
+    @property
+    def finishing_health_threshold(self) -> int:
+        value = int(self.readNumberCell(87) + 0.5)
+        return value if 0 <= value <= 50 else 20
 
     @property
     def power_focus(self) -> int:

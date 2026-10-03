@@ -2,17 +2,18 @@
 local addonName, addonTable = ...
 local config = addonTable.Config("finishing")
 local position = addonTable.Config("finishing_position")
-config:set_default(false)
-config:set_value(false) -- 每次加载重置状态，按钮位置单独保存。
+config:set_default(0)
+config:set_value(0) -- 每次加载恢复自动，按钮位置单独保存。
 local states = {
-    { value = false, label = "收尾：关", icon = 19574, color = { 0.35, 0.38, 0.4 } },
-    { value = true, label = "收尾：开", icon = 19574, color = { 0.85, 0.2, 0.2 } }
+    { value = 0, label = "收尾：自动", icon = 19574, color = { 0.15, 0.65, 0.35 } },
+    { value = 10, label = "收尾：关闭", icon = 19574, color = { 0.35, 0.38, 0.4 } },
+    { value = 20, label = "收尾：开启", icon = 19574, color = { 0.85, 0.2, 0.2 } }
 }
 local options = {}
 for _, state in ipairs(states) do options[#options + 1] = { k = state.value, v = state.label } end
 table.insert(addonTable.ConfigRows, {
-    type = "combo", name = "收尾状态", tooltip = "左击切换；Shift+左键拖动。脱战恢复默认状态。",
-    bind_config = config, default_value = false, options = options,
+    type = "combo", name = "收尾状态", tooltip = "自动：非遭遇战且目标血量低于阈值时不使用狂野怒火。左击按自动、关闭、开启循环；Shift+左键拖动。脱战及重载恢复自动。",
+    bind_config = config, default_value = 0, options = options,
 })
 local cell, button, icon, label, background
 local function CurrentState()
@@ -20,11 +21,15 @@ local function CurrentState()
     for index, state in ipairs(states) do if state.value == value then return state, index end end
     return states[1], 1
 end
+local function CycleState()
+    local _, index = CurrentState()
+    config:set_value(states[index % #states + 1].value)
+end
 local function Refresh()
     local state = CurrentState()
     local value = state.value
     if cell then
-        local gray = (value and 1 or 0)
+        local gray = value / 255
         cell:setCellRGBA(gray, gray, gray)
     end
     if button then
@@ -36,20 +41,21 @@ local function Refresh()
 end
 config:register_callback(Refresh)
 addonTable.CommandHandler["end"] = function(_, arguments)
-    if arguments == "off" then config:set_value(false)
-    elseif arguments == "on" then config:set_value(true)
-    elseif arguments == "toggle" then config:set_value(not config:get_value())
+    if arguments == "auto" then config:set_value(0)
+    elseif arguments == "off" then config:set_value(10)
+    elseif arguments == "on" then config:set_value(20)
+    elseif arguments == "toggle" then CycleState()
     else addonTable.PrintCommandHelp() end
 end
 local previousHelp = addonTable.PrintCommandHelp
 addonTable.PrintCommandHelp = function()
     previousHelp()
-    print("/pix end off|on|toggle — 收尾状态")
+    print("/pix end auto|off|on|toggle — 收尾状态，toggle按自动、关闭、开启循环")
 end
 
 local events = CreateFrame("Frame")
 events:RegisterEvent("PLAYER_REGEN_ENABLED")
-events:SetScript("OnEvent", function() config:set_value(false) end)
+events:SetScript("OnEvent", function() config:set_value(0) end)
 table.insert(addonTable.UIInitFuncs, function()
     cell = addonTable.Cell:New({ x = 60 })
     button = CreateFrame("Button", addonName .. "FinishingFrame", UIParent)
@@ -101,8 +107,7 @@ table.insert(addonTable.UIInitFuncs, function()
     end)
     button:SetScript("OnClick", function()
         if dragging or IsShiftKeyDown() then return end
-        local _, index = CurrentState()
-        config:set_value(states[index % #states + 1].value)
+        CycleState()
     end)
     Refresh()
 end)

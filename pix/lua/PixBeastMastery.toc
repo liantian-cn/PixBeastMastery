@@ -102,6 +102,7 @@ cells\083_mouseover_cast_progress.lua
 cells\084_player_has_buff_bestial_wrath.lua
 cells\085_player_buff_beast_cleave_remaining.lua
 cells\086_encounter_in_progress.lua
+cells\087_finishing_health_threshold.lua
 cells\I01_player_cast_icon.lua
 cells\I02_assisted_combat_icon.lua
 cells\I03_target_cast_icon.lua
